@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 
-// ✅ LIVE BACKEND URL (NOT localhost)
+// ✅ LIVE BACKEND URL
 const API = "https://quote-backend-veyt.onrender.com/quotes";
 
 function QuoteList({ quotes, fetchQuotes }) {
@@ -9,8 +9,13 @@ function QuoteList({ quotes, fetchQuotes }) {
   // 🗑️ DELETE QUOTE
   const deleteQuote = async (id) => {
     try {
+      if (!id) {
+        console.error("ID is undefined");
+        return;
+      }
+
       await axios.delete(`${API}/${id}`);
-      fetchQuotes(); // refresh list after delete
+      fetchQuotes(); // refresh list
     } catch (error) {
       console.error("Error deleting quote:", error);
     }
@@ -25,24 +30,30 @@ function QuoteList({ quotes, fetchQuotes }) {
       ) : (
         quotes.map((q) => (
           <div
-            key={q.id}
+            key={q.id || q._id || q.ID}
             style={{
               border: "1px solid #ccc",
               padding: "10px",
-              margin: "10px",
+              margin: "10px auto",
               borderRadius: "8px",
-              backgroundColor: "#f9f9f9"
+              backgroundColor: "#f9f9f9",
+              width: "90%",
+              maxWidth: "500px"
             }}
           >
             <p><strong>"{q.text}"</strong></p>
             <p>- {q.author}</p>
 
             <button
-              onClick={() => deleteQuote(q.id)}
+              onClick={() => deleteQuote(q.id || q._id || q.ID)}
               style={{
-                marginTop: "5px",
-                padding: "5px 10px",
-                cursor: "pointer"
+                marginTop: "10px",
+                padding: "8px 12px",
+                cursor: "pointer",
+                backgroundColor: "red",
+                color: "white",
+                border: "none",
+                borderRadius: "5px"
               }}
             >
               Delete
