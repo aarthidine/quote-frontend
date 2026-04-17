@@ -1,7 +1,8 @@
 import React from "react";
 import axios from "axios";
 
-const API = "http://localhost:8080/quotes";
+// ✅ LIVE BACKEND URL (NOT localhost)
+const API = "https://quote-backend-veyt.onrender.com/quotes";
 
 function QuoteList({ quotes, fetchQuotes }) {
 
@@ -9,7 +10,7 @@ function QuoteList({ quotes, fetchQuotes }) {
   const deleteQuote = async (id) => {
     try {
       await axios.delete(`${API}/${id}`);
-      fetchQuotes(); // refresh after delete
+      fetchQuotes(); // refresh list after delete
     } catch (error) {
       console.error("Error deleting quote:", error);
     }
@@ -38,7 +39,11 @@ function QuoteList({ quotes, fetchQuotes }) {
 
             <button
               onClick={() => deleteQuote(q.id)}
-              style={{ marginTop: "5px" }}
+              style={{
+                marginTop: "5px",
+                padding: "5px 10px",
+                cursor: "pointer"
+              }}
             >
               Delete
             </button>
